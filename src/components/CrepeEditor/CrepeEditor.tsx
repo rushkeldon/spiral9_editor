@@ -3,6 +3,7 @@ import { Crepe } from '@milkdown/crepe';
 import { Editor } from '@milkdown/core';
 import '@milkdown/crepe/theme/common/style.css';
 import '@milkdown/crepe/theme/frame-dark.css';
+import './CrepeEditor.less';
 
 type CrepeInstanceProps = {
   onReady?: (crepe: Crepe, editor: Editor) => void;
@@ -38,6 +39,12 @@ export default function CrepeEditor({ onReady, initialContent = '' }: CrepeInsta
         }
       });
 
+      // TODO : register plugins here before calling create()
+
+      // refCrepe.current.editor
+      //    .use()
+      //    .use()
+
       refEditor.current = await refCrepe.current.create();
 
       onReady?.(refCrepe.current, refEditor.current );
@@ -47,7 +54,14 @@ export default function CrepeEditor({ onReady, initialContent = '' }: CrepeInsta
     .catch((err) => {
       console.error('Failed to initialize Crepe editor:', err);
     });
+
+    return () => {
+      try { refCrepe.current?.destroy?.(); } catch { refEditor.current?.destroy?.(); }
+      refCrepe.current = null;
+      refEditor.current = null;
+    };
+
   }, [onReady]);
 
-  return <div ref={refContainerDiv} />;
+  return <div className="s9-crepe-editor-container" ref={refContainerDiv} />;
 }

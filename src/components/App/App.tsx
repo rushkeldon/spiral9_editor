@@ -1,5 +1,5 @@
 import './App.less'
-import CrepeEditor from './components/CrepeEditor/CrepeEditor.tsx';
+import CrepeEditor from '../CrepeEditor/CrepeEditor.tsx';
 
 // Simple js-signals usage: a signal that dispatches an increment amount
 
@@ -10,12 +10,12 @@ function App() {
   }
 
   return (
-    <>
+    <div className="app">
       <CrepeEditor
         onReady={crepeEditorisReady}
         initialContent="spiral9 editor"
       />
-    </>
+    </div>
   )
 }
 
