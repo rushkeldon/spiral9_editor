@@ -1,6 +1,159 @@
-.app {
+/* Root defaults for frame dimensions */
+:root {
+  --frame-width-left: 280px;
+  --frame-width-right: 320px;
+  --frame-height-bottom: 180px;
+  --frame-size-min: 36px; /* shared min size: menuBar height and minimized frames */
+}
+
+/* App container uses a 4-row grid:
+   [menuBar] [body] [horizontal resizer] [terminal] */
+.shell {
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr 6px var(--frame-height-bottom);
+  background: #1e1e1e;
+  color: #ddd;
+}
+.shell.min-bottom {
+  --frame-height-bottom: var(--frame-size-min); /* bottom minimized */
+}
+
+.menuBar {
+  background: #252526;
+  border-bottom: 1px solid #333;
+}
+.MuiToolbar-root {
+  min-height: var(--frame-size-min);
+  height: var(--frame-size-min);
+}
+
+/* Body uses a 5-column grid:
+   [left] [left-resizer] [editor] [right-resizer] [right] */
+.body {
+  display: grid;
+  grid-template-columns:
+    var(--frame-width-left)
+    6px
+    1fr
+    6px
+    var(--frame-width-right);
+  grid-template-rows: 1fr;
+  overflow: hidden;
+}
+.body.min-left {
+  grid-template-columns:
+    var(--frame-size-min)  /* left minimized */
+    6px
+    1fr
+    6px
+    var(--frame-width-right);
+}
+.body.min-right {
+  grid-template-columns:
+    var(--frame-width-left)
+    6px
+    1fr
+    6px
+    var(--frame-size-min); /* right minimized */
+}
+.body.min-left.min-right {
+  grid-template-columns:
+    var(--frame-size-min)
+    6px
+    1fr
+    6px
+    var(--frame-size-min);
+}
+
+/* Make frames position relative for min-btn */
+.frame {
+  background: #1e1e1e;
+  color: #ddd;
+  border: 1px solid #4a4a4a; /* visible frame outline */
+  overflow: hidden;
+  position: relative;
+}
+
+.projectTree { background: #202225; }
+.rightSidebar { background: #202225; }
+.editor {
+  display: grid;
+  grid-template-rows: auto 1fr; /* tabs + editor content */
+  background: #1e1e1e;
+}
+
+.tabs-header {
+  background: #252526;
+  border-bottom: 1px solid #333;
+  padding-left: 8px;
+}
+
+.editor-pane {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Horizontal terminal frame sits in the 4th row of .shell */
+.terminal {
+  background: #1e1e1e;
+  border-top: 1px solid #4a4a4a;
+  overflow: hidden;
+}
+
+/* Resizers */
+.resizer {
+  background: #2f2f2f;
+  z-index: 5;
+  user-select: none;
+  position: relative;
+}
+.resizer:hover {
+  background: #3a3a3a;
+}
+.resizer-left,
+.resizer-right {
+  cursor: col-resize;
+}
+.resizer-bottom {
+  cursor: row-resize;
+}
+
+/* Optional collapsed states (you can toggle these classes on .body) */
+.body.collapsed-left {
+  grid-template-columns: 0 6px 1fr 6px var(--frame-width-right);
+}
+.body.collapsed-right {
+  grid-template-columns: var(--frame-width-left) 6px 1fr 6px 0;
+}
+
+/* Minimal white-bar button styling */
+.min-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;            /* generous click target */
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.min-btn span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  margin: 0 auto;
+  background: #fff;       /* the tiny white bar visual */
+  opacity: 0.9;
+}
+.min-btn:hover span {
+  opacity: 1;
+}
+.min-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }

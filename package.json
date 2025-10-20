@@ -12,7 +12,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@milkdown/crepe": "^7.17.1",
+    "@mui/material": "^7.3.4",
+    "monaco-editor": "^0.54.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "signals": "^1.0.0"
