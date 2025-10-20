@@ -46,11 +46,14 @@ public final class Bridge: NSObject, WKScriptMessageHandler {
     }
 
     // MARK: - Native -> Web
+    // MARK: - Native -> Web
     public func send(event: String, payload: [String: Any] = [:]) {
         guard let webView = webView else { return }
         guard let data = try? JSONSerialization.data(withJSONObject: ["event": event, "payload": payload]),
-              let json = String(data: data, encoding: .utf8) else { return }
-        let js = "window.__nativeDispatch(\(JSON.stringify(\(json))))"
+              let jsonString = String(data: data, encoding: .utf8)?
+                .replacingOccurrences(of: "\\", with: "\\\\")
+                .replacingOccurrences(of: "\"", with: "\\\"") else { return }
+        let js = "window.__nativeDispatch(JSON.parse(\\\"\(jsonString)\\\"));"
         webView.evaluateJavaScript(js, completionHandler: nil)
     }
 }

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:mac": "vite build && rsync -av --delete dist/ spiral9/spiral9/web/",
     "preview": "vite preview"
   },
   "dependencies": {
